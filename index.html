@@ -348,7 +348,7 @@ function aiSend(txt){
   var think=document.createElement("div");think.className="bub a";think.textContent="Analyzing...";think.id="think";
   var area=document.getElementById("chatarea");if(area)area.appendChild(think);scrollChat();
   var msgs=[];for(var i=0;i<chatHist.length;i++)msgs.push({role:chatHist[i].r,content:chatHist[i].c});
-  fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer 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","HTTP-Referer":"https://srijitfx-sketch.github.io/TradeEdge","X-Title":"TradeEdge"},body:JSON.stringify({model:"google/gemma-3-4b-it:free",messages:[{role:"system",content:ctx}].concat(msgs),max_tokens:500})})
+  fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer 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","HTTP-Referer":"https://srijitfx-sketch.github.io/TradeEdge","X-Title":"TradeEdge"},body:JSON.stringify({model:"meta-llama/llama-3.2-3b-instruct:free",messages:[{role:"system",content:ctx}].concat(msgs),max_tokens:500})})
   .then(function(res){return res.json();})
   .then(function(d){
     var th=document.getElementById("think");if(th)th.remove();
