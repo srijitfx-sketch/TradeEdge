@@ -348,10 +348,19 @@ function aiSend(txt){
   var think=document.createElement("div");think.className="bub a";think.textContent="Analyzing...";think.id="think";
   var area=document.getElementById("chatarea");if(area)area.appendChild(think);scrollChat();
   var msgs=[];for(var i=0;i<chatHist.length;i++)msgs.push({role:chatHist[i].r,content:chatHist[i].c});
-  fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer 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","HTTP-Referer":"https://srijitfx-sketch.github.io/TradeEdge"},body:JSON.stringify({model:"mistralai/mistral-7b-instruct:free",messages:[{role:"system",content:ctx}].concat(msgs)})})
+  fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer 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","HTTP-Referer":"https://srijitfx-sketch.github.io/TradeEdge","X-Title":"TradeEdge"},body:JSON.stringify({model:"google/gemma-3-4b-it:free",messages:[{role:"system",content:ctx}].concat(msgs),max_tokens:500})})
   .then(function(res){return res.json();})
-  .then(function(d){var th=document.getElementById("think");if(th)th.remove();var reply=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||"No response.";chatHist.push({r:"assistant",c:reply});addBubble({r:"assistant",c:reply});})
-  .catch(function(){var th=document.getElementById("think");if(th)th.remove();addBubble({r:"assistant",c:"Connection error."});});
+  .then(function(d){
+    var th=document.getElementById("think");if(th)th.remove();
+    var reply="No response.";
+    if(d.choices&&d.choices.length>0){
+      var msg=d.choices[0].message;
+      if(msg&&msg.content)reply=msg.content;
+    } else if(d.error){
+      reply="Error: "+d.error.message;
+    }
+    chatHist.push({r:"assistant",c:reply});addBubble({r:"assistant",c:reply});
+  })  .catch(function(){var th=document.getElementById("think");if(th)th.remove();addBubble({r:"assistant",c:"Connection error."});});
 }
 function addBubble(m){var area=document.getElementById("chatarea");if(!area)return;var d=document.createElement("div");d.className="bub "+(m.r==="user"?"u":"a");d.textContent=m.c;area.appendChild(d);scrollChat();}
 function scrollChat(){var a=document.getElementById("chatarea");if(a)a.scrollTop=a.scrollHeight;}
