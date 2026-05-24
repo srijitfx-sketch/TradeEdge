@@ -335,18 +335,33 @@ function cU(){
 
 function renderAI(){
   var st=gSt();
-  var qk=["Analyze my mistakes","Improve win rate","Risk compliance","Best strategy?","Pre-session checklist"];
-  var qh="";for(var i=0;i<qk.length;i++)qh+='<button onclick="aS(\''+qk[i]+'\')" style="background:#0a0a0a;border:1px solid rgba(65,105,225,.2);border-radius:20px;color:#7a9fff;font-family:Poppins,sans-serif;font-size:11px;padding:6px 11px;cursor:pointer;font-weight:600">'+qk[i]+'</button>';
   var rows="";
   var d=[["Total Trades",trades.length,"#aaa"],["Win Rate",st.wr+"%","#FFD700"],["Daily P&L",fm(st.dP),pc(st.dP)],["Weekly P&L",fm(st.wP),pc(st.wP)],["Avg R:R","1:"+st.rr,"#00e5ff"]];
   for(var i=0;i<d.length;i++)rows+='<div class="row"><span style="font-size:12px;color:#555">'+d[i][0]+'</span><span style="font-size:13px;font-weight:700;color:'+d[i][2]+'">'+d[i][1]+'</span></div>';
   el("p3").innerHTML=
-    '<div class="card"><div class="tl"></div>'+
-    '<div style="font-size:13px;font-weight:700;color:#7a9fff;margin-bottom:10px">AI Coach</div>'+
-    '<div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px">'+qh+'</div>'+
-    '<div class="chat" id="ca"><div style="text-align:center;color:#2a2a2a;font-size:12px;padding:20px 0">Ask me anything about your trades.</div></div>'+
-    '<div class="crow"><input id="ci" placeholder="Ask your coach..." style="margin-bottom:0"/><button class="btn" style="width:auto;padding:11px 14px;margin-top:0;font-size:16px" onclick="aS()">Go</button></div></div>'+
-    '<div class="card"><div class="tl"></div><div style="font-size:12px;font-weight:700;color:#555;margin-bottom:8px">Your Stats</div>'+rows+'</div>';
+    '<div style="display:flex;flex-direction:column;height:calc(100vh - 140px)">' +
+    // Header
+    '<div style="padding:14px 0 10px">' +
+    '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:2px">AI Trading Coach</div>' +
+    '<div style="font-size:11px;color:#444">Powered by your trade data</div></div>' +
+    // Quick prompts
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">' +
+    ['Analyze my mistakes','Improve win rate','Risk compliance','Best strategy?','Pre-session checklist'].map(function(p){
+      return '<button onclick="aS(\''+p+'\')" style="background:rgba(65,105,225,0.1);border:1px solid rgba(65,105,225,0.25);border-radius:20px;color:#7a9fff;font-family:Poppins,sans-serif;font-size:11px;padding:6px 12px;cursor:pointer;font-weight:600">'+p+'</button>';
+    }).join('')+'</div>'+
+    // Chat window
+    '<div id="ca" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:4px 0;margin-bottom:12px">'+
+    '<div style="text-align:center;padding:30px 20px">'+
+    '<div style="font-size:28px;margin-bottom:8px">🤖</div>'+
+    '<div style="font-size:13px;color:#444;line-height:1.6">Hi Srijit! I know your trading history.<br>Ask me anything about your trades,<br>strategy or mindset.</div>'+
+    '</div></div>'+
+    // Input area
+    '<div style="background:#111;border:1px solid rgba(150,150,150,0.15);border-radius:16px;padding:10px 12px;display:flex;align-items:flex-end;gap:8px;margin-bottom:4px">'+
+    '<textarea id="ci" placeholder="Message your coach..." style="flex:1;background:none;border:none;color:#e8e8f0;font-family:Poppins,sans-serif;font-size:13px;resize:none;outline:none;max-height:100px;min-height:22px;line-height:1.5;padding:0;display:block;width:auto" rows="1" oninput="this.style.height=\'auto\';this.style.height=this.scrollHeight+\'px\'" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();aS();}"></textarea>'+
+    '<button onclick="aS()" style="background:linear-gradient(135deg,#4169E1,#6A0DAD);border:none;border-radius:10px;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;color:#fff">&#x2191;</button>'+
+    '</div>'+
+    '<div style="font-size:10px;color:#333;text-align:center;margin-bottom:4px">Shift+Enter for new line &middot; Enter to send</div>'+
+    '</div>';
   for(var i=0;i<chatH.length;i++)aB(chatH[i]);
 }
 function aS(txt){
@@ -369,7 +384,19 @@ function aS(txt){
     chatH.push({r:"assistant",c:rep});aB({r:"assistant",c:rep});
   }).catch(function(e){var t=el("tk");if(t)t.remove();aB({r:"assistant",c:"Connection error: "+e.message});});
 }
-function aB(m){var ca=el("ca");if(!ca)return;var d=document.createElement("div");d.className="bub "+(m.r==="user"?"u":"a");d.textContent=m.c;ca.appendChild(d);sC();}
+function aB(m){
+  var ca=el("ca");if(!ca)return;
+  var wrap=document.createElement("div");
+  wrap.style.cssText="display:flex;gap:8px;align-items:flex-start;"+(m.r==="user"?"flex-direction:row-reverse;":"");
+  var avatar=document.createElement("div");
+  avatar.style.cssText="width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px;background:"+(m.r==="user"?"linear-gradient(135deg,#4169E1,#6A0DAD)":"linear-gradient(135deg,#1a1a2e,#16213e)");
+  avatar.textContent=m.r==="user"?"S":"🤖";
+  var bub=document.createElement("div");
+  bub.style.cssText="max-width:80%;padding:10px 14px;font-size:13px;line-height:1.65;color:#ddd;white-space:pre-wrap;border-radius:"+(m.r==="user"?"16px 4px 16px 16px":"4px 16px 16px 16px")+";background:"+(m.r==="user"?"linear-gradient(135deg,#4169E1,#6A0DAD)":"#161622")+";border:"+(m.r==="user"?"none":"1px solid rgba(150,150,150,0.1)");
+  bub.textContent=m.c;
+  wrap.appendChild(avatar);wrap.appendChild(bub);
+  ca.appendChild(wrap);sC();
+}
 function sC(){var a=el("ca");if(a)a.scrollTop=a.scrollHeight;}
 
 function renderStats(){
