@@ -287,7 +287,7 @@ function updSugg(){var s=parseFloat(document.getElementById("fsp").value);var re
 function saveT(){
   var pnl=parseFloat(document.getElementById("fpnl").value);if(isNaN(pnl))return;
   trades.push({id:Date.now(),date:document.getElementById("fd").value,dir:document.getElementById("fdir").value,strat:document.getElementById("fst").value,stop:parseFloat(document.getElementById("fsp").value)||0,lots:parseFloat(document.getElementById("flo").value)||0,pnl:pnl,stars:starVal,sess:document.getElementById("fse").value,emo:document.getElementById("fem").value,notes:document.getElementById("fno").value});
-  save();renderLog();renderHome();
+  save();renderLog();window.onload=function(){renderHome();};
 }
 function delTrade(id){var nt=[];for(var i=0;i<trades.length;i++)if(trades[i].id!==id)nt.push(trades[i]);trades=nt;save();renderLog();renderHome();}
 
