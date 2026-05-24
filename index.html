@@ -518,33 +518,32 @@ function savePsych(){
 }
 function savePsych2(){localStorage.setItem("te_psych",JSON.stringify(psychLogs));}
 
-// ── SETTINGS ──
 function renderSettings(){
   var key=localStorage.getItem("te_apikey")||"";
-  var masked=key?key.substring(0,10)+"..."+key.substring(key.length-4):"Not set";
-  document.getElementById("p9").innerHTML=
+  var masked=key?"✅ "+key.substring(0,12)+"..."+key.substring(key.length-4):"❌ Not set";
+  var el=document.getElementById("p9");
+  if(!el)return;
+  el.innerHTML=
     '<div class="card" style="border:1px solid rgba(65,105,225,0.3)"><div class="tl"></div>'+
-    '<div style="font-size:13px;font-weight:700;color:#7a9fff;margin-bottom:6px">&#x2699;&#xFE0F; Settings</div>'+
-    '<div style="font-size:11px;color:#444;margin-bottom:16px">Your API key is saved only on this device. It never goes to GitHub or anywhere else.</div>'+
-
+    '<div style="font-size:15px;font-weight:700;color:#7a9fff;margin-bottom:6px">⚙️ Settings</div>'+
+    '<div style="font-size:12px;color:#555;margin-bottom:16px;line-height:1.6">Your API key is saved only on this device. It never goes to GitHub or anywhere else. 🔐</div>'+
     '<label>OpenRouter API Key</label>'+
-    '<input type="password" id="apiinp" placeholder="sk-or-v1-..." style="margin-bottom:6px"/>'+
-    '<div style="font-size:11px;color:#555;margin-bottom:4px">Current: <span style="color:'+(key?"#00e676":"#ff1744")+'">'+masked+'</span></div>'+
-    '<div style="font-size:11px;color:#444;margin-bottom:14px">Get a free key at <span style="color:#7a9fff">openrouter.ai/keys</span></div>'+
-    '<button class="btn" onclick="saveKey()" style="margin-bottom:10px">&#x1F4BE; Save API Key</button>'+
-    '<button class="btn btn-g" onclick="clearKey()">&#x1F5D1; Remove Key</button></div>'+
+    '<input type="password" id="apiinp" placeholder="sk-or-v1-..." style="margin-bottom:8px;font-size:13px"/>'+
+    '<div style="font-size:12px;margin-bottom:14px">Status: <span style="font-weight:700;color:'+(key?"#00e676":"#ff1744")+'">'+masked+'</span></div>'+
+    '<button class="btn" onclick="saveKey()" style="margin-bottom:10px">💾 Save API Key</button>'+
+    '<button class="btn btn-g" onclick="clearKey()">🗑️ Remove Key</button></div>'+
 
     '<div class="card"><div class="tl"></div>'+
-    '<div style="font-size:13px;font-weight:700;color:#aaa;margin-bottom:12px">&#x1F4CA; App Info</div>'+
-    '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">App</span><span style="font-size:12px;color:#aaa">TradeEdge v1.0</span></div>'+
-    '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Instrument</span><span style="font-size:12px;color:#aaa">MNQ / MGC</span></div>'+
-    '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Risk per trade</span><span style="font-size:12px;color:#aaa">$120</span></div>'+
-    '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Daily SL / TP</span><span style="font-size:12px;color:#aaa">$360 / $540</span></div>'+
-    '<div style="display:flex;justify-content:space-between;padding:7px 0"><span style="font-size:12px;color:#555">Weekly SL / TP</span><span style="font-size:12px;color:#aaa">$1,200 / $1,600</span></div></div>'+
+    '<div style="font-size:13px;font-weight:700;color:#aaa;margin-bottom:12px">📊 App Info</div>'+
+    '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Version</span><span style="font-size:12px;color:#aaa">TradeEdge v1.0</span></div>'+
+    '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Instrument</span><span style="font-size:12px;color:#aaa">MNQ / MGC</span></div>'+
+    '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Risk per trade</span><span style="font-size:12px;color:#aaa">$120</span></div>'+
+    '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(150,150,150,.06)"><span style="font-size:12px;color:#555">Daily SL / TP</span><span style="font-size:12px;color:#aaa">$360 / $540</span></div>'+
+    '<div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:#555">Weekly SL / TP</span><span style="font-size:12px;color:#aaa">$1,200 / $1,600</span></div></div>'+
 
-    '<div class="card" style="border-left:3px solid #ff1744"><div style="font-size:11px;color:#ff1744;font-weight:700;margin-bottom:6px">&#x26A0;&#xFE0F; Data Reset</div>'+
-    '<div style="font-size:11px;color:#555;margin-bottom:10px">This will delete all your trades, notes, and logs permanently.</div>'+
-    '<button class="btn btn-g" onclick="resetAll()" style="color:#ff1744;border-color:rgba(255,23,68,.3)">&#x1F5D1; Reset All Data</button></div>';
+    '<div class="card" style="border-left:3px solid #ff1744"><div style="font-size:12px;color:#ff1744;font-weight:700;margin-bottom:6px">⚠️ Danger Zone</div>'+
+    '<div style="font-size:11px;color:#555;margin-bottom:10px">Deletes all trades, notes and logs permanently.</div>'+
+    '<button class="btn btn-g" onclick="resetAll()" style="color:#ff1744;border-color:rgba(255,23,68,.3)">🗑️ Reset All Data</button></div>';
 }
 function saveKey(){
   var k=document.getElementById("apiinp").value.trim();
@@ -575,15 +574,15 @@ function go(i){
   document.getElementById("p"+i).classList.add("on");
   curPg=i;
   if(i===0)renderHome();
-  if(i===1)renderLog();
-  if(i===2)renderCalc();
-  if(i===3)renderAI();
-  if(i===4)renderStats();
-  if(i===5)renderRisk();
-  if(i===6)renderProps();
-  if(i===7)renderNotes();
-  if(i===8)renderPsych();
-  if(i===9)renderSettings();
+  else if(i===1)renderLog();
+  else if(i===2)renderCalc();
+  else if(i===3)renderAI();
+  else if(i===4)renderStats();
+  else if(i===5)renderRisk();
+  else if(i===6)renderProps();
+  else if(i===7)renderNotes();
+  else if(i===8)renderPsych();
+  else if(i===9){renderSettings();}
 }
 function toggleFS(){
   var el=document.documentElement,btn=document.getElementById("fsbtn"),isFs=document.fullscreenElement||document.webkitFullscreenElement;
