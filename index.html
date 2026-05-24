@@ -359,7 +359,7 @@ function aS(txt){
   var tk=document.createElement("div");tk.className="bub a";tk.textContent="Thinking...";tk.id="tk";
   var ca=el("ca");if(ca)ca.appendChild(tk);sC();
   var ms=[];for(var i=0;i<chatH.length;i++)ms.push({role:chatH[i].r,content:chatH[i].c});
-  fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://srijitfx-sketch.github.io/TradeEdge","X-OpenRouter-Title":"TradeEdge"},body:JSON.stringify({model:"deepseek/deepseek-r1-distill-qwen-7b:free",messages:[{role:"system",content:ctx}].concat(ms),max_tokens:400})})
+  fetch("https://openrouter.ai/api/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key,"HTTP-Referer":"https://srijitfx-sketch.github.io/TradeEdge","X-OpenRouter-Title":"TradeEdge"},body:JSON.stringify({model:"openrouter/free",messages:[{role:"system",content:ctx}].concat(ms),max_tokens:400})})
   .then(function(res){return res.json();})
   .then(function(d){
     var t=el("tk");if(t)t.remove();
