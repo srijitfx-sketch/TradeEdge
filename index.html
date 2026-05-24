@@ -574,6 +574,17 @@ function toggleFS(){
   else{var x=document.exitFullscreen||document.webkitExitFullscreen;if(x)x.call(document);if(b)b.textContent="[]";}
 }
 
-window.onload=function(){renderHome();};
+window.onload=function(){
+  var p=document.getElementById("p0");
+  if(!p){alert("p0 missing!");return;}
+  try{
+    renderHome();
+  }catch(e){
+    p.innerHTML='<div style="color:#ff1744;padding:20px;font-size:13px;line-height:1.8">'+
+    '<b>Error:</b> '+e.message+'<br><br>'+
+    '<b>Line:</b> '+(e.lineNumber||"unknown")+'<br><br>'+
+    'Please screenshot this and share it.</div>';
+  }
+};
 </script>
 </body></html>
