@@ -412,7 +412,7 @@ function viewTrade(id){
     '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">'+
     '<button onclick="go(1)" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;color:var(--text2);font-size:13px;cursor:pointer">&#8592;</button>'+
     '<div><div style="font-size:18px;font-weight:800;letter-spacing:1px">'+sym+'</div><div style="font-size:10px;color:var(--text3);letter-spacing:1px">TRD-'+t.id.toString().slice(-4)+' &middot; FUTURES</div></div>'+
-    '<span class="tag '+(t.dir==="Long"?"tag-long":"tag-short")" style="margin-left:auto">'+t.dir.toUpperCase()+'</span>'+
+    '<span class="tag '+(t.dir==="Long"?"tag-long":"tag-short")+'" style="margin-left:auto">'+t.dir.toUpperCase()+'</span>'+
     '</div>'+
     '<div class="g2" style="margin-bottom:10px">'+
     '<div class="stat-box"><div class="stat-label">P&L</div><div class="stat-val" style="color:'+pc(t.pnl)+'">'+fm(t.pnl)+'</div></div>'+
